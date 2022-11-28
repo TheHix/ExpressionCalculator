@@ -1,0 +1,44 @@
+.container {
+  margin: 0 auto;
+  margin-top: 50px;
+  max-width: 980px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.container > :not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.controls {
+  display: flex;
+}
+
+.controls > :not(:last-child) {
+  margin-right: 20px;
+}
+
+.input:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.inputFieldsColumn {
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.inputFieldsColumn:not(:last-child) {
+  margin-right: 15px;
+}
+
+.inputFields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
