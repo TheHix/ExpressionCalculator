@@ -1,28 +1,34 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import RegularExpInput from "../regularExpInput/RegularExpInput";
 import styles from "./Root.module.css";
-import { TextField, Typography, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 import { userSettings } from "../../../constants/renderData";
-import UserSettingsControls from "../userSettingsControls/UserSettingsControls";
 import getFilteredText from "../../../utils/filteredText";
 import { ListOfTransformations } from "../../../models/listOfTransformations";
+import InteractionControls from "../interactionControls/InteractionControls";
+import { sessionStorage } from "../../../services/sessionStorage";
 
-//TODO: вывод в код js/py
-//TODO: сохранение в Localstorage(?)
+const initialList = sessionStorage.getListOfTransformations();
 
 const Root = () => {
   const [userSetting, setUserSetting] = useState<string>(userSettings[0]);
 
   const [regularExp, setRegularExp] = useState<string>("");
   const [replacementExp, setReplacementExp] = useState<string>("");
-  const [sourceText, setSourceText] = useState<string>("");
+  const [sourceText, setSourceText] = useState<string>(initialList[initialList.length - 1]?.outputText ?? "");
   const [outputText, setOutputText] = useState<string>("");
 
-  const [listOfTransformations, setListOfTransformations] = useState<ListOfTransformations[]>([]);
+  const [listOfTransformations, setListOfTransformations] = useState<ListOfTransformations[]>(initialList);
+
+  const clearFields = () => {
+    setRegularExp("");
+    setReplacementExp("");
+    setSourceText("");
+    setOutputText("");
+  };
 
   const setFilteredText = () => {
-    const regExp = RegExp(regularExp, "gi");
-    const filteredText = getFilteredText(sourceText, regExp, replacementExp, userSetting);
+    const filteredText = getFilteredText(sourceText, regularExp, replacementExp, userSetting);
     if (!filteredText) return;
 
     setOutputText(filteredText);
@@ -39,11 +45,17 @@ const Root = () => {
     };
 
     setListOfTransformations([...listOfTransformations, newTransformationItem]);
+    sessionStorage.setListOfTransformations([...listOfTransformations, newTransformationItem]);
 
-    setRegularExp("");
-    setReplacementExp("");
+    clearFields();
     setSourceText(outputText);
-    setOutputText("");
+  };
+
+  const resetData = () => {
+    setListOfTransformations([]);
+    sessionStorage.setListOfTransformations([]);
+
+    clearFields();
   };
 
   return (
@@ -74,21 +86,20 @@ const Root = () => {
           rows={4}
         />
       </div>
-      <div className={styles.controls}>
-        <UserSettingsControls userSetting={userSetting} setUserSetting={setUserSetting} />
 
-        <Button variant="contained" onClick={setFilteredText}>
-          Получить результат
-        </Button>
-
-        <Button variant="contained" onClick={goToNextStep}>
-          Продолжить с получившимся текстом
-        </Button>
-      </div>
+      <InteractionControls
+        transformationList={listOfTransformations}
+        goToNextStep={goToNextStep}
+        resetData={resetData}
+        setFilteredText={setFilteredText}
+        setUserSetting={setUserSetting}
+        stepNumber={listOfTransformations.length + 1}
+        userSetting={userSetting}
+      />
 
       <TextField value={outputText} inputProps={{ readOnly: true }} className={styles.input} multiline rows={7} />
     </main>
   );
 };
 
-export default Root;
+export default memo(Root);
