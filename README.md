@@ -1,5 +1,7 @@
 # ExpressionCalculator
 
+https://expression-calculator-xi.vercel.app/
+
 ## Локальный запуск
 
 NodeJs v16+
