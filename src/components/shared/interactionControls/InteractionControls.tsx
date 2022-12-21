@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react";
-import { Button, Typography, Modal, Box } from "@mui/material";
+import React, { FC, useEffect, useState, memo } from "react";
+import { Button, Typography } from "@mui/material";
 import CodeIcon from "@mui/icons-material/Code";
 import ReplayIcon from "@mui/icons-material/Replay";
 import styles from "./InteractionControls.module.css";
@@ -11,6 +11,7 @@ interface InteractionControlsProps {
   userSetting: string;
   stepNumber: number;
   transformationList: ListOfTransformations[];
+  currentFields: ListOfTransformations;
   setUserSetting: (setting: string) => void;
   setFilteredText: () => void;
   goToNextStep: () => void;
@@ -21,18 +22,26 @@ const InteractionControls: FC<InteractionControlsProps> = ({
   userSetting,
   transformationList,
   stepNumber,
+  currentFields,
   setUserSetting,
   setFilteredText,
   goToNextStep,
   resetData,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const getCurrentTransformationList = () => {
+    if (currentFields.outputText === "") return transformationList;
+    return [...transformationList, currentFields];
+  };
+
   return (
     <>
-      <ModalCode transformationList={transformationList} open={open} handleClose={handleClose} />
+      <ModalCode transformationList={getCurrentTransformationList()} open={open} handleClose={handleClose} />
+
       <div className={styles.controls}>
         <UserSettingsControls userSetting={userSetting} setUserSetting={setUserSetting} />
 
@@ -59,4 +68,4 @@ const InteractionControls: FC<InteractionControlsProps> = ({
   );
 };
 
-export default InteractionControls;
+export default memo(InteractionControls);

@@ -95,6 +95,12 @@ const Root = () => {
         setUserSetting={setUserSetting}
         stepNumber={listOfTransformations.length + 1}
         userSetting={userSetting}
+        currentFields={{
+          regularExp,
+          replacementExp,
+          sourceText,
+          outputText,
+        }}
       />
 
       <TextField value={outputText} inputProps={{ readOnly: true }} className={styles.input} multiline rows={7} />

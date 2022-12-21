@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, memo } from "react";
 import { Modal, Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { ListOfTransformations } from "../../../models/listOfTransformations";
@@ -32,6 +32,7 @@ const ModalCode: FC<ModalCode> = ({ open, handleClose, transformationList }) => 
     backgroundColor: theme.palette.mode === "dark" ? "white" : "#08090a",
     color: theme.palette.mode === "dark" ? "#121212" : "white",
   };
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
@@ -75,4 +76,4 @@ const ModalCode: FC<ModalCode> = ({ open, handleClose, transformationList }) => 
   );
 };
 
-export default ModalCode;
+export default memo(ModalCode);
