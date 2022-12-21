@@ -10,7 +10,6 @@ interface RegularExpInputProps {
 }
 
 const RegularExpInput: FC<RegularExpInputProps> = ({ label, placeholder, onChange, value, className = "" }) => {
-  //TODO: валидация regExp
   return (
     <TextField
       value={value}
