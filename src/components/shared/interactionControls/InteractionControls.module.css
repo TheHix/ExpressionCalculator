@@ -1,0 +1,24 @@
+.controls {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.controls > button {
+  min-height: 54px;
+}
+
+@media screen and (max-width: 875px) {
+  .controls {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.commonControls {
+  display: flex;
+  align-items: center;
+}
+
+.commonControls > :first-child {
+  margin-right: 15px;
+}
